@@ -4,6 +4,11 @@ global _start
 
 section .text
 _start:
+        call showNumbers
+
+        mov eax, 1
+        mov ebx, 0
+        int 0x80
 
 showNumbers:
         add byte [msg], 48      ; To ascii
@@ -20,9 +25,7 @@ showNumbers:
         cmp byte [msg], 10      ; Compare number with 10
         jl showNumbers          ; If smaller than ten, repeat
 
-        mov eax, 1
-        mov ebx, 0
-        int 0x80
+        ret
 
 section .data
         msg db 0, 0xA           ; A string with a 0 and a \n
