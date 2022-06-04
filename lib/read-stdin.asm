@@ -1,19 +1,9 @@
 ;;; read-stdin.asm
 
-global _start
+global read
+global write
 
 section .text
-_start:
-        sub esp, 11             ; Reserve 11 bytes for the string
-        push esp                ; String address
-        push 11                 ; Read max 10 chars
-        call read
-
-        ; No need to push to stack the args, reusing last args
-        call write
-
-        call exit0
-
 read:
 ;; Reads from stdin
 ;; Args: address (where to store it),
@@ -39,9 +29,3 @@ write:
         int 0x80
 
         ret
-
-exit0:
-;; Exits with 0 (success)
-        mov eax, 1
-        mov ebx, 0
-        int 0x80
