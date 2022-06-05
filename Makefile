@@ -37,6 +37,11 @@ all: $(BUILD_DIR) $(BIN_DIR) $(BIN_PROJECTS)
 $(BUILD_DIR) $(BIN_DIR):
 	mkdir -p $@
 
+.PHONY: clean
+
+clean:
+	rm -rf $(BIN_DIR) $(BUILD_DIR)
+
 # Args: project name (folder) and then file names of the libs used
 $(eval $(call PROJECT,hello-world))
 $(eval $(call PROJECT,test-stdin,read-stdin exit))
