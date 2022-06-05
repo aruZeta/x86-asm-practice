@@ -14,6 +14,18 @@ PROJECTS_DIR:=projects
 
 PROJECTS:=$(shell ls -1 --color=never $(PROJECTS_DIR))
 BIN_PROJECTS:=$(foreach project,$(PROJECTS),$(BIN_DIR)/$(project))
+LIB_ASM_FILES_ALL:=$(shell find $(LIB_DIR)/ -name '*.asm')
+LIB_O_FILES_ALL:=$(LIB_ASM_FILES_ALL:%.asm=$(BUILD_DIR)/%.o)
+
+all: $(BUILD_DIR) $(BIN_DIR) $(BIN_PROJECTS)
+
+$(BUILD_DIR) $(BIN_DIR):
+	mkdir -p $@
+
+.PHONY: clean lib
+
+clean:
+	rm -rf $(BIN_DIR) $(BUILD_DIR)
 
 define SRC
 $(1): $(1:$(BUILD_DIR)/%.o=%.asm)
@@ -22,25 +34,19 @@ $(1): $(1:$(BUILD_DIR)/%.o=%.asm)
 endef
 
 define PROJECT
-$(eval ASM_FILES=$(foreach file,$(2),$(LIB_DIR)/$(file).asm))
-$(eval ASM_FILES+=$(shell find $(PROJECTS_DIR)/$(1) -name '*.asm'))
+$(eval LIB_ASM_FILES=$(foreach file,$(2),$(LIB_DIR)/$(file).asm))
+$(eval ASM_FILES=$(shell find $(PROJECTS_DIR)/$(1) -name '*.asm'))
+$(eval LIB_O_FILES=$(LIB_ASM_FILES:%.asm=$(BUILD_DIR)/%.o))
 $(eval O_FILES=$(ASM_FILES:%.asm=$(BUILD_DIR)/%.o))
 
-$(BIN_DIR)/$(1): $(O_FILES)
+$(BIN_DIR)/$(1): $(O_FILES) $(LIB_O_FILES)
 	$(LINKER) $(LINKER_ARGS) -o $$@ $$^
 
 $(foreach file,$(O_FILES),$(eval $(call SRC,$(file))))
 endef
 
-all: $(BUILD_DIR) $(BIN_DIR) $(BIN_PROJECTS)
-
-$(BUILD_DIR) $(BIN_DIR):
-	mkdir -p $@
-
-.PHONY: clean
-
-clean:
-	rm -rf $(BIN_DIR) $(BUILD_DIR)
+# Library asm files
+$(foreach file,$(LIB_O_FILES_ALL),$(eval $(call SRC,$(file))))
 
 # Args: project name (folder) and then file names of the libs used
 $(eval $(call PROJECT,hello-world))
