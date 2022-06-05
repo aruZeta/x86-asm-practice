@@ -2,19 +2,17 @@
 
 global _start                   ; Stating that _start is the main function
 
+extern write
+extern exit0
+
 ;;; Instructions section
 section .text
 _start:
-        mov eax, 4              ; use the write syscall
-        mov ebx, 1              ; use stdout as the fd
-        mov ecx, message        ; use the message as the buffer
-        mov edx, message_length ; and supply the length
-        int 0x80                ; invoke syscall
+        push message        ; use the message as the buffer
+        push message_length ; and supply the length
+        call write
 
-        ;; Exit
-        mov eax, 1              ; use the exit syscall
-        mov ebx, 0              ; exit succesfully
-        int 0x80                ; invoke syscall
+        call exit0
 
 ;;; Variable section
 section .data

@@ -49,6 +49,6 @@ endef
 $(foreach file,$(LIB_O_FILES_ALL),$(eval $(call SRC,$(file))))
 
 # Args: project name (folder) and then file names of the libs used
-$(eval $(call PROJECT,hello-world))
+$(eval $(call PROJECT,hello-world,stdout exit))
 $(eval $(call PROJECT,test-stdin,stdin stdout exit))
 $(eval $(call PROJECT,numbers-from-0-to-9))
