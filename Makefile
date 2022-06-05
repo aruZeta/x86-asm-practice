@@ -44,5 +44,5 @@ clean:
 
 # Args: project name (folder) and then file names of the libs used
 $(eval $(call PROJECT,hello-world))
-$(eval $(call PROJECT,test-stdin,read-stdin exit))
+$(eval $(call PROJECT,test-stdin,stdin stdout exit))
 $(eval $(call PROJECT,numbers-from-0-to-9))
