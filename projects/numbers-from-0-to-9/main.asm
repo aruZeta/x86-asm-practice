@@ -2,31 +2,31 @@
 
 global _start
 
+extern write
+extern exit0
+
 section .text
 _start:
+        push msg
+        push msg_len
         call showNumbers
 
-        mov eax, 1
-        mov ebx, 0
-        int 0x80
+        call exit0
 
 showNumbers:
-        add byte [msg], 48      ; To ascii
-
-        mov eax, 4
-        mov ebx, 1
-        mov ecx, msg
-        mov edx, msg_len
-        int 0x80
-
-        sub byte [msg], 48      ; Back to normal
+;; Writes numbers from 0 to 9
+;; Args: address (where the string is stored),
+;;       length (includes final null-char)
+        pop esi                 ; So write uses the passed args
+        call write              ; we remove the instruction pointer
+        push esi                ; and then get it back
 
         inc byte [msg]          ; Increment the number
-        cmp byte [msg], 10      ; Compare number with 10
+        cmp byte [msg], 58      ; Compare number with 10
         jl showNumbers          ; If smaller than ten, repeat
 
         ret
 
 section .data
-        msg db 0, 0xA           ; A string with a 0 and a \n
+        msg db 48, 0xA           ; A string with a 0 (in ascii) and a \n
         msg_len equ $-msg
