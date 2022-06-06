@@ -22,7 +22,7 @@ all: $(BUILD_DIR) $(BIN_DIR) $(BIN_PROJECTS)
 $(BUILD_DIR) $(BIN_DIR):
 	mkdir -p $@
 
-.PHONY: clean lib
+.PHONY: clean
 
 clean:
 	rm -rf $(BIN_DIR) $(BUILD_DIR)
