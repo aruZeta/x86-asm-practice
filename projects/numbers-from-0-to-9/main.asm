@@ -16,7 +16,7 @@ _start:
 showNumbers:
 ;; Writes numbers from 0 to 9
 ;; Args: address (where the string is stored),
-;;       length (includes final null-char)
+;;       length (the length of the string)
         pop esi                 ; So write uses the passed args
         call write              ; we remove the instruction pointer
         push esi                ; and then get it back

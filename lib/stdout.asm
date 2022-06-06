@@ -6,7 +6,7 @@ section .text
 write:
 ;; Writes to stdout
 ;; Args: address (where the string is stored),
-;;       length (includes final null-char)
+;;       length (includes final null-char or \n if there is any)
         mov eax, 4
         mov ebx, 1
         mov ecx, [esp+8]
