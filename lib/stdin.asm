@@ -7,6 +7,7 @@ read:
 ;; Reads from stdin
 ;; Args: address (where to store it),
 ;;       length (includes final null-char)
+;; Returns: number of bytes read
         mov eax, 3
         mov ebx, 0
         mov ecx, [esp+8]
