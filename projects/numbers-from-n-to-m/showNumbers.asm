@@ -16,10 +16,11 @@ showNumbersLoop:
         call write
 
         mov ecx, [esp]
+        sub ecx, 2
         mov edx, [esp+4]
-        inc byte [edx+ecx-2]
+        inc byte [edx+ecx]
 
-        cmp byte [edx+ecx-2], 58
+        cmp byte [edx+ecx], 58
         jl showNumbersLoop
         je showNumbersIncPrev
 
@@ -28,14 +29,14 @@ showNumbersEnd:
         ret
 
 showNumbersIncPrev:
-        cmp ecx, 2
+        cmp ecx, 0
         je showNumbersEnd
 
-        mov byte [edx+ecx-2], 48
+        mov byte [edx+ecx], 48
 
         dec ecx
-        inc byte [edx+ecx-2]
-        cmp byte [edx+ecx-2], 58
+        inc byte [edx+ecx]
+        cmp byte [edx+ecx], 58
         jl showNumbersLoop
         je showNumbersIncPrev
 
