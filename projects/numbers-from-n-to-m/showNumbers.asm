@@ -12,15 +12,15 @@ showNumbers:
 ;;       length (the length of the string)
         pop esi
 
+        mov ecx, [esp]
+        mov edx, [esp+4]
+        lea edi, [ecx+edx-2]
+
 showNumbersLoop:
         call write
 
-        mov ecx, [esp]
-        sub ecx, 2
-        mov edx, [esp+4]
-        inc byte [edx+ecx]
-
-        cmp byte [edx+ecx], 58
+        inc byte [edi]
+        cmp byte [edi], 58
         jl showNumbersLoop
         je showNumbersIncPrev
 
@@ -29,16 +29,18 @@ showNumbersEnd:
         ret
 
 showNumbersIncPrev:
-        cmp ecx, 0
+        lea ecx, [edi]
+_showNumbersIncPrev:
+        cmp ecx, [esp+4]
         je showNumbersEnd
 
-        mov byte [edx+ecx], 48
+        mov byte [ecx], 48
 
         dec ecx
-        inc byte [edx+ecx]
-        cmp byte [edx+ecx], 58
+        inc byte [ecx]
+        cmp byte [ecx], 58
         jl showNumbersLoop
-        je showNumbersIncPrev
+        je _showNumbersIncPrev
 
         ;; If this executes something bad happened ...
         push 1
